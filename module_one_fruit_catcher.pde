@@ -4,11 +4,13 @@ int fruitSize = 20;
 int basketX;
 int basketWidth = 80;
 int basketY;
+
 // # Optional: Add different shapes for fruits and basket
 int shapeType; // 0: circle, 1: square, 2: triangle
 int basketType; // 0: circle, 1: square, 2: triangle
 int basketTypeChangeTime = 5000;
 // # End of optional practice
+
 int score = 0;
 int gameTime = 60;
 boolean gameOver = false;
@@ -25,22 +27,25 @@ void setup() {
   fruitY = 0;
   basketX = width / 2;
   basketY = height - 50;
+  
   // # Optional: Add different shapes for fruits and basket
   shapeType = int(random(3));
   basketType = int(random(3));
   // # End of optional practice
+  
   startTime = millis();
   lastShapeChange = millis();
 }
 
 void draw() {
   background(255);
-  
+
   // Exercise : Condition -> end game when time is up
   if (gameOver) {
     textSize(32);
     fill(0);
     text("Game Over", width / 2 - 80, height / 2);
+    text("Score: "+score, width / 2 - 60, height / 2+40);
     return;
   }
   /// End of exercise
@@ -48,6 +53,7 @@ void draw() {
   // Draw basket
   fill(150);
   rect(basketX - basketWidth / 2, basketY, basketWidth, 20);
+  
   // # Optional: Add different shapes for fruits and basket
   fill(0);
   if (basketType == 0) ellipse(basketX, basketY, 10, 10);
@@ -56,15 +62,30 @@ void draw() {
   // # End of optional practice
   
   // Draw fruit
-  fill(255, 0, 0);
+  
   // # Optional: Add different shapes for fruits and basket
-  // ellipse(fruitX, fruitY, fruitSize, fruitSize);
+ 
   if (shapeType == 0) {
-    ellipse(fruitX, fruitY, fruitSize, fruitSize);
+    //ellipse(fruitX, fruitY, fruitSize, fruitSize);
+    fill(255, 204, 0);
+    ellipse(fruitX, fruitY, fruitSize, fruitSize); // 臉
+    fill(0);
+    ellipse(fruitX - 5, fruitY - 5, 4, 4); // 左眼
+    ellipse(fruitX + 5, fruitY - 5, 4, 4); // 右眼
+    noFill();
+    arc(fruitX, fruitY + 2, 10, 6, 0, PI); // 微笑
+    
   } else if (shapeType == 1) {
-    square(fruitX - fruitSize / 2, fruitY - fruitSize / 2, fruitSize);
+    //square(fruitX - fruitSize / 2, fruitY - fruitSize / 2, fruitSize);
+    fill(34, 139, 34);
+    triangle(fruitX, fruitY - fruitSize / 2, fruitX - fruitSize / 2, fruitY + fruitSize / 4, fruitX + fruitSize / 2, fruitY + fruitSize / 4); // 上層樹
+    triangle(fruitX, fruitY, fruitX - fruitSize / 2, fruitY + fruitSize / 2, fruitX + fruitSize / 2, fruitY + fruitSize / 2); // 下層樹
+    fill(139, 69, 19);
+    rect(fruitX - fruitSize / 8, fruitY + fruitSize / 2, fruitSize / 4, fruitSize / 4); // 樹幹
+  
   } else if (shapeType == 2) {
     triangle(fruitX, fruitY - fruitSize / 2, fruitX - fruitSize / 2, fruitY + fruitSize / 2, fruitX + fruitSize / 2, fruitY + fruitSize / 2);
+    //create your own one!
   }
   // # End of optional practice
   
@@ -84,8 +105,10 @@ void draw() {
       score--;
     }
     // # End of optional practice
+    
     fruitX = int(random(width));
     fruitY = 0;
+    
     // # Optional: Randomize shape of fruit
     shapeType = int(random(3));
     // # End of optional practice
@@ -95,6 +118,7 @@ void draw() {
   if (fruitY > height) {
     fruitX = int(random(width));
     fruitY = 0;
+    
     // # Optional: Randomize shape of fruit
     shapeType = int(random(3));
     // # End of optional practice
