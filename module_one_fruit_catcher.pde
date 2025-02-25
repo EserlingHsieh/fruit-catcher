@@ -106,6 +106,7 @@ void draw() {
     rect(fruitX - fruitSize / 8, fruitY + fruitSize / 2, fruitSize / 4, fruitSize / 4); // 樹幹
   
   } else if (shapeType == 2) {
+    fill(255, 204, 0);
     triangle(fruitX, fruitY - fruitSize / 2, fruitX - fruitSize / 2, fruitY + fruitSize / 2, fruitX + fruitSize / 2, fruitY + fruitSize / 2);
     //create your own one!
   }
