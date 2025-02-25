@@ -3,6 +3,7 @@ int fruitY;
 int fruitSize = 20;
 int basketX;
 int basketWidth = 80;
+int basketHeight = 20;
 int basketY;
 
 // # Optional: Add different shapes for fruits and basket
@@ -20,6 +21,9 @@ int startTime;
 
 int basketVelocity = 0;
 int basketSpeed = 25;
+float fruitSpeed;
+float minFruitSpeed = 5;
+float maxFruitSpeed = 10;
 
 void setup() {
   size(400, 600);
@@ -35,6 +39,8 @@ void setup() {
   
   startTime = millis();
   lastShapeChange = millis();
+
+  fruitSpeed = minFruitSpeed;
 }
 
 void draw() {
@@ -52,23 +58,25 @@ void draw() {
   
   // Draw basket
   fill(150);
-  rect(basketX - basketWidth / 2, basketY, basketWidth, 20);
+  rect(basketX - basketWidth / 2, basketY, basketWidth, basketHeight);
   
   // # Optional: Add different shapes for fruits and basket
   fill(0);
   if (basketType == 0) {
     // draw face on center of basket, with half the size
-    ellipse(basketX, basketY + 7.5, 10, 10); // 臉
+    ellipse(basketX, basketY + basketHeight / 2, fruitSize / 2, fruitSize / 2); // 臉
     fill(255);
-    ellipse(basketX - 2.5, basketY + 5, 2, 2); // 左眼
-    ellipse(basketX + 2.5, basketY + 5, 2, 2); // 右眼
-    arc(basketX, basketY + 10, 5, 3, 0, PI); // 微笑
+    ellipse(basketX - 2.5, basketY + basketHeight / 2 - 2.5, 2, 2); // 左眼
+    ellipse(basketX + 2.5, basketY + basketHeight / 2 - 2.5, 2, 2); // 右眼
+    arc(basketX, basketY + basketHeight / 2 + 1, 5, 3, 0, PI); // 微笑
   }
   else if (basketType == 1) {
     // draw tree on center of basket, with half the size, using fruit size parameters
-    triangle(basketX, basketY + 2.5, basketX - 5, basketY + 10, basketX + 5, basketY + 10); // 上層樹
-    triangle(basketX, basketY + 10, basketX - 5, basketY + 15, basketX + 5, basketY + 15); // 下層樹
-    rect(basketX - 2.5, basketY + 15, 5, 5); // 樹幹
+    fill(34, 139, 34);
+    triangle(basketX, basketY + basketHeight / 2 - fruitSize / 4, basketX - fruitSize / 4, basketY + basketHeight / 2 + fruitSize / 8, basketX + fruitSize / 4, basketY + basketHeight / 2 + fruitSize / 8); // 上層樹
+    triangle(basketX, basketY + basketHeight / 2, basketX - fruitSize / 4, basketY + basketHeight / 2 + fruitSize / 4, basketX + fruitSize / 4, basketY + basketHeight / 2 + fruitSize / 4); // 下層樹
+    fill(139, 69, 19);
+    rect(basketX - fruitSize / 16, basketY + basketHeight / 2 + fruitSize / 4, fruitSize / 8, fruitSize / 8); // 樹幹
   }
   else if (basketType == 2) {
     triangle(basketX, basketY + 2.5, basketX - 5, basketY + 10, basketX + 5, basketY + 10);
@@ -104,7 +112,14 @@ void draw() {
   // # End of optional practice
   
   // Move fruit
-  fruitY += 5;
+  fruitY += fruitSpeed;
+  
+  // Gradually increase fruit speed
+  float elapsedTime = (millis() - startTime) / 1000.0;
+  fruitSpeed = minFruitSpeed + (maxFruitSpeed - minFruitSpeed) * elapsedTime / gameTime;
+  if (fruitSpeed > maxFruitSpeed) {
+    fruitSpeed = maxFruitSpeed;
+  }
 
   // Move basket (# Optional practice for optimize basket movement)
   // basketX += basketVelocity;
