@@ -6,8 +6,8 @@ int basketWidth = 80;
 int basketY;
 
 // # Optional: Add different shapes for fruits and basket
-int shapeType; // 0: circle, 1: square, 2: triangle
-int basketType; // 0: circle, 1: square, 2: triangle
+int shapeType; // 0: circle, 1: tree, 2: create your own one!
+int basketType; // 0: circle, 1: tree, 2: create your own one!
 int basketTypeChangeTime = 5000;
 // # End of optional practice
 
@@ -56,9 +56,23 @@ void draw() {
   
   // # Optional: Add different shapes for fruits and basket
   fill(0);
-  if (basketType == 0) ellipse(basketX, basketY, 10, 10);
-  else if (basketType == 1) square(basketX - 5, basketY - 5, 10);
-  else if (basketType == 2) triangle(basketX, basketY - 5, basketX - 5, basketY + 5, basketX + 5, basketY + 5);
+  if (basketType == 0) {
+    // draw face on center of basket, with half the size
+    ellipse(basketX, basketY + 7.5, 10, 10); // 臉
+    fill(255);
+    ellipse(basketX - 2.5, basketY + 5, 2, 2); // 左眼
+    ellipse(basketX + 2.5, basketY + 5, 2, 2); // 右眼
+    arc(basketX, basketY + 10, 5, 3, 0, PI); // 微笑
+  }
+  else if (basketType == 1) {
+    // draw tree on center of basket, with half the size, using fruit size parameters
+    triangle(basketX, basketY + 2.5, basketX - 5, basketY + 10, basketX + 5, basketY + 10); // 上層樹
+    triangle(basketX, basketY + 10, basketX - 5, basketY + 15, basketX + 5, basketY + 15); // 下層樹
+    rect(basketX - 2.5, basketY + 15, 5, 5); // 樹幹
+  }
+  else if (basketType == 2) {
+    triangle(basketX, basketY + 2.5, basketX - 5, basketY + 10, basketX + 5, basketY + 10);
+  }
   // # End of optional practice
   
   // Draw fruit
