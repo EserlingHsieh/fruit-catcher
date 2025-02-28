@@ -147,12 +147,11 @@ void draw() {
   text("Time: " + (gameTime - (millis() - startTime) / 1000), 10, 60);
   /// End of exercise
 
-  // # Optional: Change basket shape every 5 seconds
+  //Change basket shape every 5 seconds
   if (millis() - lastShapeChange > basketTypeChangeTime) {
     lastShapeChange = millis();
     basketType = int(random(3));
   }
-  // # End of optional practice
   
   // #Practice 3-1 : end game when time is up
   if (millis() - startTime > gameTime * 1000) {
