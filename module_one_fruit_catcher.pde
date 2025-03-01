@@ -81,6 +81,9 @@ void draw() {
     text("Score: "+score, width / 2 - 60, height / 2+40);
     return;
   }
+  if (millis() - startTime > gameTime * 1000) {
+    gameOver = true;
+  }
   /// End of exercise
   
   // #Practice 1-1: draw Basket
@@ -153,10 +156,7 @@ void draw() {
     basketType = int(random(3));
   }
   
-  // #Practice 3-1 : end game when time is up
-  if (millis() - startTime > gameTime * 1000) {
-    gameOver = true;
-  }
+
   /// End of exercise
 }
 
