@@ -36,7 +36,6 @@ void setup() {
   shapeType = int(random(3)); // Randomly select the initial shape for the fruit
   basketType = int(random(3)); // Randomly select the initial shape for the basket
   
-  print("millis is "+millis());
   startTime = millis(); // Record the start time
   lastShapeChange = millis(); // Record the last shape change time
 
@@ -94,7 +93,7 @@ void draw() {
   if (gameTime - (millis() - startTime) / 1000==0){
       gameOver = true;
   }
-  /// End of exercise
+  /// End of practice
   
   // #Practice 1-1: draw Basket
   // move basket with mouse
