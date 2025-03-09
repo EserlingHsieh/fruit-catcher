@@ -100,8 +100,7 @@ void draw() {
   // #Practice 1-1: draw Basket
   // move basket with mouse
   basketX = mouseX;
-  // set boundaries for basket
-  // basketX = constrain(basketX, basketWidth / 2, width - basketWidth / 2);
+  /// End of practice
   
   // Draw falling fruit
   pushMatrix();
