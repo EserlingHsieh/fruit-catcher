@@ -75,8 +75,10 @@ void drawShape(float type) {
 }
 
 void draw() {
+  // #Practice 2-1: insert background image
   // background(255);
   image(background,0,0,400,600);
+  /// End of practice
 
   // #Practice 3-1 : Condition -> end game when time is up
   
