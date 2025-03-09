@@ -1,48 +1,52 @@
-int fruitX;
-int fruitY;
-int basketX;
-int basketWidth = 80;
-int basketHeight = 20;
-int basketY;
+int fruitX; // Center X position of the falling fruit
+int fruitY; // Center Y position of the falling fruit
+int basketX; // Center X position of the basket
+int basketY; // Top Y position of the basket
+int basketWidth = 120; // Width of the basket
+int basketHeight = 30; // Height of the basket
 
-int shapeType; // 0: triangle, 1: tree, 2: smile
-int basketType; // 0: triangle, 1: tree, 2: smile
-int basketTypeChangeTime = 5000;
+int shapeType; // Type of the shape for the fruit, 0: triangle, 1: tree, 2: smile
+int basketType; // Type of the shape for the basket, 0: triangle, 1: tree, 2: smile
+int basketTypeChangeTime = 5000; // Time interval to change basket type
 
-int score = 0;
-int gameTime = 60;
-boolean gameOver = false;
-int lastShapeChange;
-int lastFruitSpawn;
-int startTime;
+// Game state variables
+int score = 0; // Player's score
+int gameTime = 60;  // Total game time in seconds
+boolean gameOver = false; // Flag to check if the game is over
+int lastShapeChange; // Timestamp of the last shape change
+int startTime; // Timestamp of the game start
 
-int basketVelocity = 0;
-int basketSpeed = 25;
-float fruitSpeed;
-float minFruitSpeed = 5;
-float maxFruitSpeed = 10;
+// Basket movement variables
+int basketSpeed = 25; // Speed of basket movement
+
+// Fruit speed variables
+float fruitSpeed; // Speed of the falling fruit
+float minFruitSpeed = 2; // Minimum speed of falling fruit
+float maxFruitSpeed = 10; // Maximum speed of falling fruit
+PImage background;
 
 void setup() {
-  size(400, 600);
-  fruitX = int(random(width));
-  fruitY = 0;
-  basketX = width / 2;
-  basketY = height - 50;
+  size(400, 600); // Set the size of the window
+  background = loadImage ("background.jpeg");
+  fruitX = int(random(width)); // Initialize fruit X position randomly
+  fruitY = 0; // Initialize fruit Y position at the top
+  basketX = width / 2; // Initialize basket X position at the center
+  basketY = height - 50; // Initialize basket Y position near the bottom
   
-  // random shapes for fruits and basket
-  shapeType = int(random(3));
-  basketType = int(random(3));
+  shapeType = int(random(3)); // Randomly select the initial shape for the fruit
+  basketType = int(random(3)); // Randomly select the initial shape for the basket
   
-  startTime = millis();
-  lastShapeChange = millis();
+  print("millis is "+millis());
+  startTime = millis(); // Record the start time
+  lastShapeChange = millis(); // Record the last shape change time
 
-  fruitSpeed = minFruitSpeed;
-  
+  fruitSpeed = minFruitSpeed; // Initialize fruit speed
 }
 
 void drawShape(float type) {
-  
-    if (type == 0) {
+  pushMatrix();
+  scale(2);
+  if (type == 0) {
     // #Practice 1-1: draw Triangle
     fill(255, 204, 0);
     triangle(0, 0-20/2, 0- 20/2, 0 + 20/2, 0 + 20/2, 0 + 20/2);
@@ -62,112 +66,106 @@ void drawShape(float type) {
     fill(255, 204, 0);
     ellipse(0,0, 20, 20);
     fill(0);
-    ellipse(0-5, 0-5, 4, 4);
-    ellipse(0+5, 0-5, 4, 4);
+    circle(0-5, 0-5, 4);
+    circle(5, 0-5, 4);
     noFill();
     arc(0, 0+2, 10, 6, 0, PI);
     /// End of practice
   }
+  popMatrix();
 }
 
 void draw() {
-  background(255);
+  // background(255);
+  image(background,0,0,400,600);
 
   // #Practice 3-1 : Condition -> end game when time is up
+  
+  // End game when time is up
   if (gameOver) {
+    background(255);
     textSize(32);
     fill(0);
     text("Game Over", width / 2 - 80, height / 2);
     text("Score: "+score, width / 2 - 60, height / 2+40);
     return;
   }
-  if (millis() - startTime > gameTime * 1000) {
-    gameOver = true;
+  // Check if the time is up
+  if (gameTime - (millis() - startTime) / 1000==0){
+      gameOver = true;
   }
   /// End of exercise
   
   // #Practice 1-1: draw Basket
-  fill(150);
-  rect(basketX - basketWidth / 2, basketY, basketWidth, basketHeight);
-  /// End of practice
+  // move basket with mouse
+  basketX = mouseX;
+  // set boundaries for basket
+  // basketX = constrain(basketX, basketWidth / 2, width - basketWidth / 2);
   
-  pushMatrix(); // draw basket fruit
-  translate(basketX, basketY+9);
-  scale(0.5);
-  drawShape (basketType); //call function drawShape
-  popMatrix();
-  
-  pushMatrix(); // draw fruit
+  // Draw falling fruit
+  pushMatrix();
   translate(fruitX, fruitY); 
-  drawShape (shapeType); //call function drawShape
+  drawShape(shapeType);
   popMatrix();
+  
+  // Draw Basket
+  fill(150);
+  int offsetX = 10;  // offset the basket to make it look like a trapezoid
+  quad(basketX - basketWidth / 2, basketY, basketX + basketWidth / 2, basketY, basketX + basketWidth / 2 - offsetX, basketY + basketHeight, basketX - basketWidth / 2 + offsetX, basketY+ basketHeight);
+  
+  // Draw basket fruit
+  pushMatrix();
+  translate(basketX, basketY + basketHeight / 2);
+  scale(0.5);
+  drawShape(basketType);
+  popMatrix();
+  /// End of practice
   
   // #Practice 1-2: fruit fall from top
   fruitY += fruitSpeed;
   /// End of practice
   
-  
   // #Practice 3-2: increase game difficulty
   // Gradually increase fruit speed
-  float elapsedTime = (millis() - startTime) / 1000.0;
+  float elapsedTime = (millis() - startTime) / 1000.0; // Elapsed time since the game started
   fruitSpeed = minFruitSpeed + (maxFruitSpeed - minFruitSpeed) * elapsedTime / gameTime;
-  if (fruitSpeed > maxFruitSpeed) {
-    fruitSpeed = maxFruitSpeed;
-  }
   /// End of practice
 
-  
   // #Practice 1-2: Check if fruit hits the ground
   if (fruitY > height) {
+    // Reset fruit position and shape
     fruitX = int(random(width));
     fruitY = 0;
-    shapeType = int(random(3));
+    shapeType = int(random(3)); //這裡加個用途說明 因為這個會直接附在初始code裡
   }
   /// End of practice
-  
   
   // #Practice 2-2: Check if fruit is caught
   // Add score if correct fruit is caught, else subtract score
   if (fruitY > basketY && fruitX > basketX - basketWidth / 2 && fruitX < basketX + basketWidth / 2) {
-    
     if (shapeType == basketType) {
       score++;
     } else {
       score--;
     }
     
+    // Reset fruit position and shape
     fruitX = int(random(width));
     fruitY = 0; 
     shapeType = int(random(3));
   }
   /// End of practice
   
-  
   // #Practice 2-3: Draw UI
   textSize(16);
   fill(0);
   text("Score: " + score, 10, 20);
   text("Time: " + (gameTime - (millis() - startTime) / 1000), 10, 60);
-  /// End of exercise
+  /// End of practice
 
   //Change basket shape every 5 seconds
   if (millis() - lastShapeChange > basketTypeChangeTime) {
     lastShapeChange = millis();
     basketType = int(random(3));
   }
-  
-
-  /// End of exercise
 }
-
-
-  // #Practice 1-3: control basket with keyboard
-  // #Practice 2-1: set boundaries for basket
-void keyPressed() {
-  if (keyCode == LEFT && basketX >= 0) {
-    basketX -= basketSpeed;
-  } else if (keyCode == RIGHT && basketX <= 400) {
-    basketX += basketSpeed;
-  }
-}
-  /// End of exercise
