@@ -97,8 +97,7 @@ void draw() {
   }
   /// End of practice
   
-  // #Practice 1-1: draw Basket
-  // move basket with mouse
+  // #Practice 1-3: control basket with mouse
   basketX = mouseX;
   /// End of practice
   
@@ -108,10 +107,11 @@ void draw() {
   drawShape(shapeType);
   popMatrix();
   
-  // Draw Basket
+  // #Practice 1-1: draw Basket
   fill(150);
   int offsetX = 10;  // offset the basket to make it look like a trapezoid
   quad(basketX - basketWidth / 2, basketY, basketX + basketWidth / 2, basketY, basketX + basketWidth / 2 - offsetX, basketY + basketHeight, basketX - basketWidth / 2 + offsetX, basketY+ basketHeight);
+  /// End of practice
   
   // Draw basket fruit
   pushMatrix();
@@ -119,7 +119,6 @@ void draw() {
   scale(0.5);
   drawShape(basketType);
   popMatrix();
-  /// End of practice
   
   // #Practice 1-2: fruit fall from top
   fruitY += fruitSpeed;
