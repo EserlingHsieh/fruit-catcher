@@ -21,8 +21,8 @@ int basketSpeed = 25; // Speed of basket movement
 
 // Fruit speed variables
 float fruitSpeed; // Speed of the falling fruit
-float minFruitSpeed = 2; // Minimum speed of falling fruit
-float maxFruitSpeed = 10; // Maximum speed of falling fruit
+float minFruitSpeed = 5; // Minimum speed of falling fruit
+float maxFruitSpeed = 15; // Maximum speed of falling fruit
 PImage background;
 
 void setup() {
